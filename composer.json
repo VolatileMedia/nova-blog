@@ -1,0 +1,45 @@
+{
+    "name": "jordanbaindev/nova-blog",
+    "description": "Blog manager for Laravel Nova",
+    "keywords": [
+      "laravel",
+      "nova",
+      "page",
+      "manager",
+      "blog"
+    ],
+    "authors": [
+      {
+        "name": "Jordan Bain",
+        "email": "jordanbaindev@gmail.com",
+        "role": "Developer"
+      }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "laravel/nova": "^4.20.2",
+        "whitecube/nova-flexible-content": "^1.0.7",
+        "outl1ne/nova-sortable": "^3.4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jordanbaindev\\NovaBlog\\": "src/"
+        },
+        "files": [
+          "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jordanbaindev\\NovaBlog\\ToolServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
