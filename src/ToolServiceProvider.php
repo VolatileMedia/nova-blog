@@ -34,13 +34,6 @@ class ToolServiceProvider extends ServiceProvider
             __DIR__ . '/../config/nova-blog.php' => config_path('nova-blog.php'),
         ], 'nova-blog-config');
 
-        $postResource = config('nova-blog.post_resource') ?: \Jordanbaindev\NovaBlog\Nova\Post::class;
-        $categoryResource = config('nova-blog.category_resource') ?: \Jordanbaindev\NovaBlog\Nova\Category::class;
-
-        Nova::resources([
-            $postResource,
-            $categoryResource
-        ]);
 
         // Nova::serving(function (ServingNova $event) {
         //     //

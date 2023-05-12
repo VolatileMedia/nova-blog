@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('category_id')->constrained($categoriesTable)->onDelete('cascade');
             $table->string('title');
-            $table->string('slug')->default('')->unique();
+            $table->string('slug')->unique();
             $table->string('featured_image')->nullable();
             $table->longText('post_introduction')->nullable();
             $table->json('post_content');
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('seo_title')->nullable();
             $table->string('seo_description')->nullable();
             $table->string('seo_image')->nullable();
+            $table->string('seo_image_alt')->nullable();
 
             $table->boolean('published')->default(true);
 

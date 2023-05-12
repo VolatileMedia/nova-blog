@@ -2,17 +2,18 @@
 
 namespace Jordanbaindev\NovaBlog\Models;
 
+use Advoor\NovaEditorJs\NovaEditorJs;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Jordanbaindev\NovaBlog\NovaBlog;
-use Whitecube\NovaFlexibleContent\Value\FlexibleCast;
 
 class Post extends Model
 {
     public $related_posts;
 
     protected $casts = [
-        'post_content' => FlexibleCast::class,
         'published_at' => 'datetime',
         'data' => 'object'
     ];
@@ -22,6 +23,43 @@ class Post extends Model
         'updated_at',
         'published_at',
     ];
+
+
+    /**
+     * Get the portfolio image url.
+     */
+    protected function featuredImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $value ? Storage::url($value) : null,
+        );
+    }
+
+    /**
+     * Get the portfolio seo image url.
+     */
+    protected function seoImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $value ? Storage::url($value) : null,
+        );
+    }
+
+    public static function getCardInfo(int $limit = null)
+    {
+        $quary = self::select('id', 'title', 'slug', 'featured_image', 'post_introduction','published_at')
+            ->orderBy('id', 'DESC');
+
+        if ($limit) $quary = $quary->limit($limit);
+
+        $cardInfo = $quary->get();
+
+        foreach ($cardInfo as $item) {
+            $item->post_introduction = NovaEditorJs::generateHtmlOutput($item->post_introduction)->toHtml();
+        }
+
+        return $cardInfo;
+    }
 
     protected function serializeDate(DateTimeInterface $date): string
     {
@@ -55,12 +93,6 @@ class Post extends Model
     protected static function boot()
     {
         parent::boot();
-        static::updating(function ($post) {
-            if ($post->slug_generation === 'new_from_title') {
-                $post->slug = str_replace(' ', '-', $post->title);
-            }
-            unset($post->slug_generation);
-        });
         static::saving(function ($post) {
             if ($post->is_pinned) {
                 Post::where('is_pinned', true)->each(function ($pinnedPost) {

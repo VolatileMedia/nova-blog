@@ -3,8 +3,8 @@
 namespace Jordanbaindev\NovaBlog;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Menu\MenuItem;
-use Laravel\Nova\Menu\MenuSection;
+// use Laravel\Nova\Menu\MenuItem;
+// use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
@@ -19,6 +19,14 @@ class NovaBlog extends Tool
     {
         Nova::script('nova-blog', __DIR__.'/../dist/js/tool.js');
         Nova::style('nova-blog', __DIR__.'/../dist/css/tool.css');
+
+        $postResource = config('nova-blog.post_resource') ?: \Jordanbaindev\NovaBlog\Nova\Post::class;
+        $categoryResource = config('nova-blog.category_resource') ?: \Jordanbaindev\NovaBlog\Nova\PostCategory::class;
+
+        Nova::resources([
+            $postResource,
+            $categoryResource
+        ]);
     }
 
     /**
