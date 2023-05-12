@@ -22,8 +22,6 @@ class ToolServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-blog');
-
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->publishes([
